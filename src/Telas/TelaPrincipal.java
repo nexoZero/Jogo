@@ -13,13 +13,21 @@ public class TelaPrincipal extends JFrame{
     private JPanel painel;
     private JButton botao1;   
     private JButton botao2;
-    ControleBotoesSelecionados controle ;
-
+    private ControleBotoesSelecionados controle ;    
     
     public TelaPrincipal(){
         super("Jogo da Memoria"); //Nome da Janela
         controle = new ControleBotoesSelecionados();
         controle.setNmBotoes("hentai");
+        
+        ActionListener acaoBotao = new  ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                 controle.executarAcaoBotao(((JButton) ae.getSource()),StatusBotao.SELECIONADO);
+                 // ((JButton) ae.getSource()) e uma forma generica de dizer que o botao foi precionado
+            }
+            
+        };
         
         //instanciar painel
         this.painel = new JPanel();
@@ -29,7 +37,8 @@ public class TelaPrincipal extends JFrame{
         botao1 = new JButton("jogo");
         painel.add(botao1);
         botao1.setBounds(10, 10, 100, 100); //definir tamanho e posicao do botao no painel
-       
+        botao1.addActionListener(acaoBotao); //adiciona uma aco ao botao
+        /*
         //criar uma ação quando o botao for pressionado
         botao1.addActionListener(new ActionListener() {
             @Override
@@ -37,7 +46,7 @@ public class TelaPrincipal extends JFrame{
                    //System.out.println("Botao B1 pressionado");
                    
                     //mudar a cor do botao
-                   botao1.setBackground(Color.green);
+                  // botao1.setBackground(Color.green);
                    //((JButton) ae.getSource()).setBackground(Color.yellow);
                    
                    //alterar o status na referencias do botao
@@ -45,36 +54,17 @@ public class TelaPrincipal extends JFrame{
                    //controle.alterStatusBotao(((JButton) ae.getSource()), StatusBotao.SELECIONADO);
                    
                    //Alterar o texto do botao
-                   botao1.setText(controle.getNmBotoes());
+                  // botao1.setText(controle.getNmBotoes());
                   //((JButton) ae.getSource()).setText(controle.getNmBotoes());
                    
             }
         });
-        
+        */
         
         botao2 = new JButton("jogo");
         painel.add(botao2);
         botao2.setBounds(120,10,100,100);//definir tamanho e posicao do botao no painel
-        
-        botao2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                   //System.out.println("Botao B1 pressionado");
-                   
-                    //mudar a cor do botao
-                   botao2.setBackground(Color.green);
-                   //((JButton) ae.getSource()).setBackground(Color.yellow);
-                   
-                   //alterar o status na referencias do botao
-                   controle.alterStatusBotao(botao2, StatusBotao.SELECIONADO);
-                   //controle.alterStatusBotao(((JButton) ae.getSource()), StatusBotao.SELECIONADO);
-                   
-                   //Alterar o texto do botao
-                   botao2.setText(controle.getNmBotoes());
-                  //((JButton) ae.getSource()).setText(controle.getNmBotoes());
-            }
-        });
-        
+        botao2.addActionListener(acaoBotao); //adicionar uma acao ao botao
         
         this.controle.adicionarBotao(botao1);
         this.controle.adicionarBotao(botao2);

@@ -1,5 +1,6 @@
 package regras;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JButton;
@@ -31,16 +32,47 @@ public class ControleBotoesSelecionados {
         this.refBotao.put(botao, StatusBotao.NORMAL); //adicionar um novo botao no map
     }
     
+    public void executarAcaoBotao(JButton botao, StatusBotao status){
+        this.alterStatusBotao(botao, status);
+            if(this.isTodosSelecionados()){
+                this.alterStatusTodosBotao(StatusBotao.PAR_ENCONTRADO);
+            } else {
+                this.alterVisualizacaoBotao(botao);
+            }
+    }
+    
     public void alterStatusBotao( JButton botao, StatusBotao status){
-        StatusBotao b = this.refBotao.get(botao); // esse metodo irar procurar pela chave passada e devolverar o valor que ela referencia
-        b = status;
+        this.refBotao.put(botao, status);
+    }
+    
+    private void alterStatusTodosBotao( StatusBotao status){
+        for( JButton botao : this.refBotao.keySet()){
+            this.alterStatusBotao(botao, status);
+            this.alterVisualizacaoBotao(botao);
+        }
+    }
+    
+    private void alterVisualizacaoBotao( JButton botao){
+        StatusBotao status = this.refBotao.get(botao);
+        switch (status){
+            case NORMAL: //mudar cor pra cinza,nao exibe o texto
+                botao.setBackground(null);
+                botao.setText("jogo");
+                break;
+            case SELECIONADO: // exibe texto, mudar a cor
+                botao.setBackground(Color.GREEN);
+                botao.setText(this.nmBotoes);
+                break;
+            case PAR_ENCONTRADO: // mudar a cor , mudar texto
+                botao.setBackground(Color.MAGENTA);
+                botao.setText(this.nmBotoes);
+                botao.setEnabled(false); // metodo que deixa o botao ativo ou nao
+                break;
+        }
     }
     
     public void zerarSelecionados(){
-        //O loop irar pecorre todo o map e irar set false em todos os valores
-            for( StatusBotao b : this.refBotao.values()){
-                b = StatusBotao.NORMAL;
-            }
+       this.alterStatusTodosBotao(StatusBotao.NORMAL);
     }
     public boolean isTodosSelecionados(){
         //esse metodo verificar se ainda há botoes nao selecionados
