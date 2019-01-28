@@ -12,6 +12,8 @@ import regras.ControleBotoesSelecionados;
 import regras.StatusBotao;
 
 public class TelaPrincipal extends JFrame{
+    private static int QUANTIDADE_JOGADA = 2;
+    private int jogadas = 0;
     private JPanel painel;
     private JButton botao1;   
     private JButton botao2;
@@ -20,11 +22,14 @@ public class TelaPrincipal extends JFrame{
     private ControleBotoesSelecionados controle1 ;
     private ControleBotoesSelecionados controle2 ;    
     private List<ControleBotoesSelecionados> listControle;
+    private List<ControleBotoesSelecionados> listSelecionados;
+
     
     public TelaPrincipal(){
         super("Jogo da Memoria"); //Nome da Janela
 
         listControle = new ArrayList<>();
+        listSelecionados = new ArrayList<>();
         
         ActionListener acaoBotao = new  ActionListener() {
             @Override
@@ -33,7 +38,26 @@ public class TelaPrincipal extends JFrame{
                 
                     for(ControleBotoesSelecionados controleTemp : listControle){
                         if(controleTemp.getRefBotao().get(botao) != null){
+                            jogadas++;
                             controleTemp.executarAcaoBotao(((JButton) ae.getSource()),StatusBotao.SELECIONADO);
+                                if(!listSelecionados.contains(controleTemp)){
+                                    listSelecionados.add(controleTemp);
+                                }
+                            System.out.println(listSelecionados.size());
+                                if(jogadas == QUANTIDADE_JOGADA){
+                                    //acabaram as jogadas
+                                        if(listSelecionados.size() > 1){
+                                            // se for maior que 1 quer dizer que foi selecionado mais de dois botoes diferente
+                                                for(ControleBotoesSelecionados cbs : listSelecionados){
+                                                    //zerar os status do botoes que foram selecionados
+                                                    cbs.zerarSelecionados();
+                                                }
+                                        }
+                                    // zerar contado e lista dos botoes selecionados
+                                    jogadas = 0;
+                                    listSelecionados.clear();
+                                }
+                            break;
                         }
                     }
                 
